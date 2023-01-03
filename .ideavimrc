@@ -1,0 +1,232 @@
+" ================================================================================================
+" = Extensions =====================================
+" ================================================================================================
+Plug 'tpope/vim-surround'
+Plug 'preservim/nerdtree'
+Plug 'easymotion/vim-easymotion'
+" ================================================================================================
+" = plug settings =====================================
+" ================================================================================================
+"nmap f <Plug>(easymotion-s)
+nmap s <Plug>(easymotion-s)
+" ================================================================================================
+" = Basic settings =====================================
+" ================================================================================================
+set multicursor
+set clipboard+=unnamed
+set ignorecase
+set scrolloff=7
+set history=200
+"忽略大小写
+set ignorecase
+"智能匹配
+set smartcase
+"行号
+set number
+"相对行号
+set relativenumber
+set incsearch
+set hlsearch
+set keep-english-in-normal
+set keep-english-in-normal-and-restore-in-insert
+"默认分屏
+set splitright
+set splitbelow
+"突出显示当前行
+set cursorline
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+" Use ctrl-c as an ide shortcut in normal and visual modes
+sethandler <C-C> v:ide
+sethandler <C-A> n:ide
+sethandler <C-V> i:ide
+" ================================================================================================
+" = No Leader Keymaps =====================================
+" ================================================================================================
+nmap ge <action>(GotoNextError)
+nmap gt <action>(GotoTest)
+nmap gm <action>(MethodDown)
+nmap gM <action>(MethodUp)
+nmap gi <action>(GotoImplementation)
+nmap gb <action>(Back)
+nmap gf <action>(Forward)
+" last changed in current buffer(file)
+nmap ga '.
+
+map <C-s> :w<CR>
+
+map L <action>(NextTab)
+map H <action>(PreviousTab)
+"展示菜单
+nmap <silent> sm <action>(ShowPopupMenu)
+map <silent> K 5k
+map <silent> J 5j
+" Faster in-line navigation
+nmap W 5w
+nmap B 5b
+
+" gh key: go to the first word the line
+map <silent> gh ^
+" gl key: go to the end of the line
+map <silent> gl $
+
+" ================================================================================================
+" = Window management =====================================
+" ================================================================================================
+" Resize splits with arrow keys
+nmap <up> :res +5<CR>
+nmap <down> :res -5<CR>
+nmap <left> :vertical resize-5<CR>
+nmap <right> :vertical resize+5<CR>
+
+" ================================================================================================
+" = Leader Keymaps =====================================
+" ================================================================================================
+let mapleader=" "
+
+" ================================================================================================
+" 👻👻👻 Which-Key 👻👻👻
+" ================================================================================================
+set which-key
+set notimeout
+let g:WhichKeyDesc_NoHighlight = "<leader><CR> NoHighlight"
+nmap <leader><CR> :nohlsearch<CR>
+
+let g:WhichKeyDesc_CommentByLineComment = "<leader>;; CommentByLineComment"
+nmap <leader>;; :action CommentByLineComment<CR> 
+
+" a:
+let g:WhichKeyDesc_Select = "<leader>A SelectAll"
+nmap <leader>A maggVG
+
+" d: diff
+"nmap <leader>dd <action>(Vcs.ShowTabbedFileHistory)
+" Adjacent duplicate words
+"noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
+
+" e: Toggle Explorer ⭐️
+let g:WhichKeyDesc_ToggleExplorerOrExtract = "<leader>e ToggleExplorer"
+nmap <leader>e <action>(ActivateProjectToolWindow)
+" e: Extract
+" extract method/function
+vmap <leader>em <action>(ExtractMethod)
+" extract constant
+vmap <leader>ec <action>(IntroduceConstant)
+" extract field
+vmap <leader>ef <action>(IntroduceField)
+" extract variable
+vmap <leader>ev <action>(IntroduceVariable)
+
+" f: Find/Format ⭐️;
+let g:WhichKeyDesc_FindOrFormat = "<leader>f FindOrFormat"
+let g:WhichKeyDesc_FindOrFormat_FindFile = "<leader>ff FindFile"
+nmap <leader>ff <action>(GotoFile)
+
+let g:WhichKeyDesc_FindOrFormat_FindFileLocation = "<leader>fl FindFileLocation"
+nmap <leader>fl <action>(SelectInProjectView)
+
+let g:WhichKeyDesc_FindOrFormat_FindText = "<leader>ft FindText"
+nmap <leader>ft <action>(FindInPath)
+
+let g:WhichKeyDesc_FindOrFormat_Commands = "<leader>fc Commands"
+nmap <leader>fc <action>(GotoAction)
+
+let g:WhichKeyDesc_FindOrFormat_OpenedProject = "<leader>fp OpenedProject"
+nmap <leader>fp <action>(OpenProjectWindows)
+
+let g:WhichKeyDesc_FindOrFormat_Format = "<leader>fm Format"
+nmap <leader>fm <action>(ReformatCode) \| <action>(OptimizeImports)
+
+" g: Git ⭐️
+let g:WhichKeyDesc_Git = "<leader>g Git"
+let g:WhichKeyDesc_Git_RollbackHunk = "<leader>gr RollbackHunk"
+nmap <leader>gr :action Vcs.RollbackChangedLines<CR>
+
+" i: Insert ⭐️
+let g:WhichKeyDesc_InsertAfterBrackets = "<leader>i InsertAfterBrackets"
+nmap <leader>i f(a
+
+" j: page down
+let g:WhichKeyDesc_pageDown ="<leader>j pageDown"
+nmap <leader>j  <C-d>
+
+" k: page up
+let g:WhichKeyDesc_pageUp ="<leader>k pageUp"
+nmap <leader>k  <C-u>
+
+"n: new Class with ncNewClass
+let g:WhichKeyDesc_NewClass ="<leader>nc NewClass"
+nmap <leader>nc :action NewClass<CR>
+" p: paste
+let g:WhichKeyDesc_PasteFromSelectAll = "<leader>P PasteFromSelectAll"
+nmap <leader>P "bp
+" q :quit
+let g:WhichKeyDesc_Quit ="<leader>Quit"
+nmap <leader>q :wq<CR>
+" r: Run/Re ⭐️
+let g:WhichKeyDesc_RunOrRe = "<leader>r RunOrRe"
+let g:WhichKeyDesc_RunOrRe_ReRun = "<leader>rr ReRun"
+nmap <leader>rr <action>(Rerun)
+let g:WhichKeyDesc_RunOrRe_ReRunTests = "<leader>rt ReRunTests"
+nmap <leader>rt <action>(RerunTests)
+let g:WhichKeyDesc_RunOrRe_ReDebug = "<leader>rd RunDebug"
+nmap <leader>rd <action>(ChooseDebugConfiguration)
+let g:WhichKeyDesc_RunOrRe_Rename = "<leader>re Rename"
+nmap <leader>re <action>(RenameElement)
+let g:WhichKeyDesc_RecentFiles= "<leader>rf RecentFiles"
+nmap <leader>rf <action>(RecentFiles)
+" s: Show ⭐️
+let g:WhichKeyDesc_Show = "<leader>s Show"
+let g:WhichKeyDesc_Show_FileStructure = "<leader>ss ShowFileStructure"
+nmap <leader>ss <action>(FileStructurePopup)
+let g:WhichKeyDesc_Show_Bookmarks = "<leader>sb ShowBookmarks"
+nmap <leader>sb <action>(ShowBookmarks)
+let g:WhichKeyDesc_Show_ParameterInfo = "<leader>sb ShowParameterInfo"
+nmap <leader>sp <action>(ParameterInfo)
+
+
+" w: Window ⭐️
+let g:WhichKeyDesc_Windows = "<leader>w Windows"
+let g:WhichKeyDesc_Windows_splitWindowVertically = "<leader>wl splitWindowVertically"
+nmap <leader>wl <action>(Macro.SplitVertically)
+let g:WhichKeyDesc_Windows_CloseAllWindow = "<leader>ww CloseWindow"
+nmap <leader>ww <c-w>c
+let g:WhichKeyDesc_CloseThisWindow = "<leader>c CloseThisWindow"
+nmap <leader>wc :q!<CR>
+
+" y: copy all
+let g:WhichKeyDesc_CopyAll = "<leader>Y Copy All"
+nmap <leader>Y maggVG"by
+
+" z: regions ⭐️
+let g:WhichKeyDesc_Regions="<leader>z Regions"
+let g:WhichKeyDesc_ExpandAllRegions= "<leader> zo ExpandAllRegions"
+nmap <leader>zo <action>(ExpandAllRegions)
+let g:WhichKeyDesc_CollapseAllRegions= "<leader> zo CollapseAllRegions"
+nmap <leader>zc <action>(CollapseAllRegions)
+
+"===================================================================================
+"========= Insert map =========
+"===================================================================================
+imap ,; <ESC>A;<ESC>
+"autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
+imap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
+imap <buffer> <c-e> <Esc>/<++><CR>:nohlsearch<CR>"_c4l
+imap <buffer> ,w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
+imap <buffer> ,n ---<Enter><Enter>
+imap <buffer> ,b **** <++><Esc>F*hi
+imap <buffer> ,s ~~~~ <++><Esc>F~hi
+imap <buffer> ,i ** <++><Esc>F*i
+imap <buffer> ,d `` <++><Esc>F`i
+imap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
+imap <buffer> ,m - [ ] 
+imap <buffer> ,p ![](<++>) <++><Esc>F[a
+imap <buffer> ,a [](<++>) <++><Esc>F[a
+imap <buffer> ,1 #<Space><Enter><++><Esc>kA
+imap <buffer> ,2 ##<Space><Enter><++><Esc>kA
+imap <buffer> ,3 ###<Space><Enter><++><Esc>kA
+imap <buffer> ,4 ####<Space><Enter><++><Esc>kA
+imap <buffer> ,l --------<Enter>
