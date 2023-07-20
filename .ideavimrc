@@ -1,21 +1,27 @@
 " ================================================================================================
-" = Extensions =====================================
-" ================================================================================================
+" = plug settings =====================================
+ ================================================================================================
 Plug 'tpope/vim-surround'
 Plug 'preservim/nerdtree'
 Plug 'easymotion/vim-easymotion'
+Plug 'machakann/vim-highlightedyank'
+set quickscope
+set multicursor
+nmap ss <Plug>(easymotion-s)
+let g:highlightedyank_highlight_duration = "1000"
+let g:highlightedyank_highlight_color = "rgba(101, 76, 79, 150)"
+nmap <C-A-n> <Plug>(multicursor-ms/)
+
 " ================================================================================================
-" = plug settings =====================================
+" = Leader Keymaps =====================================
 " ================================================================================================
-"nmap f <Plug>(easymotion-s)
-nmap s <Plug>(easymotion-s)
+let mapleader=" "
 " ================================================================================================
 " = Basic settings =====================================
 " ================================================================================================
-set multicursor
+set showmode
 set clipboard+=unnamed
-set ignorecase
-set scrolloff=7
+set scrolloff=10
 set history=200
 "忽略大小写
 set ignorecase
@@ -27,13 +33,17 @@ set number
 set relativenumber
 set incsearch
 set hlsearch
-set keep-english-in-normal
-set keep-english-in-normal-and-restore-in-insert
 "默认分屏
 set splitright
 set splitbelow
 "突出显示当前行
 set cursorline
+"keep in English
+set keep-english-in-normal
+set keep-english-in-normal-and-restore-in-insert
+"置空s键
+nmap s <nop>
+nmap S <nop>
 
 """ Idea specific settings ------------------
 set ideajoin
@@ -55,13 +65,12 @@ nmap gb <action>(Back)
 nmap gf <action>(Forward)
 " last changed in current buffer(file)
 nmap ga '.
-
 map <C-s> :w<CR>
-
 map L <action>(NextTab)
 map H <action>(PreviousTab)
 "展示菜单
 nmap <silent> sm <action>(ShowPopupMenu)
+nmap <silent> sf <action>(RevealIn)
 map <silent> K 5k
 map <silent> J 5j
 " Faster in-line navigation
@@ -73,7 +82,7 @@ map <silent> gh ^
 " gl key: go to the end of the line
 map <silent> gl $
 
-" ================================================================================================
+" ==============================================================================================
 " = Window management =====================================
 " ================================================================================================
 " Resize splits with arrow keys
@@ -81,11 +90,16 @@ nmap <up> :res +5<CR>
 nmap <down> :res -5<CR>
 nmap <left> :vertical resize-5<CR>
 nmap <right> :vertical resize+5<CR>
-
-" ================================================================================================
-" = Leader Keymaps =====================================
-" ================================================================================================
-let mapleader=" "
+" split windows
+nmap sj :set splitbelow<CR>:split<CR>
+nmap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+nmap sh :set splitright<CR>:vsplit<CR>
+nmap sl :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+" window options
+nmap wj <C-W>j
+nmap wk <C-W>k
+nmap wh <C-W>h
+nmap wl <C-W>l
 
 " ================================================================================================
 " 👻👻👻 Which-Key 👻👻👻
@@ -96,7 +110,7 @@ let g:WhichKeyDesc_NoHighlight = "<leader><CR> NoHighlight"
 nmap <leader><CR> :nohlsearch<CR>
 
 let g:WhichKeyDesc_CommentByLineComment = "<leader>;; CommentByLineComment"
-nmap <leader>;; :action CommentByLineComment<CR> 
+nmap <leader>;; :action CommentByLineComment<CR>
 
 " a:
 let g:WhichKeyDesc_Select = "<leader>A SelectAll"
@@ -104,12 +118,10 @@ nmap <leader>A maggVG
 
 " d: diff
 "nmap <leader>dd <action>(Vcs.ShowTabbedFileHistory)
-" Adjacent duplicate words
-"noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
 
 " e: Toggle Explorer ⭐️
 let g:WhichKeyDesc_ToggleExplorerOrExtract = "<leader>e ToggleExplorer"
-nmap <leader>e <action>(ActivateProjectToolWindow)
+nmap <leader>e :NERDTreeToggle<CR>
 " e: Extract
 " extract method/function
 vmap <leader>em <action>(ExtractMethod)
@@ -147,7 +159,7 @@ nmap <leader>gr :action Vcs.RollbackChangedLines<CR>
 
 " i: Insert ⭐️
 let g:WhichKeyDesc_InsertAfterBrackets = "<leader>i InsertAfterBrackets"
-nmap <leader>i f(a
+nmap <leader>i f(
 
 " j: page down
 let g:WhichKeyDesc_pageDown ="<leader>j pageDown"
@@ -178,15 +190,21 @@ let g:WhichKeyDesc_RunOrRe_Rename = "<leader>re Rename"
 nmap <leader>re <action>(RenameElement)
 let g:WhichKeyDesc_RecentFiles= "<leader>rf RecentFiles"
 nmap <leader>rf <action>(RecentFiles)
-" s: Show ⭐️
+
 let g:WhichKeyDesc_Show = "<leader>s Show"
-let g:WhichKeyDesc_Show_FileStructure = "<leader>ss ShowFileStructure"
+let g:WhichKeyDesc_Show_FileStructure = "<leader>ss ShowFileStructurePopup"
 nmap <leader>ss <action>(FileStructurePopup)
 let g:WhichKeyDesc_Show_Bookmarks = "<leader>sb ShowBookmarks"
 nmap <leader>sb <action>(ShowBookmarks)
-let g:WhichKeyDesc_Show_ParameterInfo = "<leader>sb ShowParameterInfo"
+let g:WhichKeyDesc_Show_ParameterInfo = "<leader>sp ShowParameterInfo"
 nmap <leader>sp <action>(ParameterInfo)
 
+" u: upper lower ⭐️
+let g:WhichKeyDesc_UpperAndLower = "<leader>u UpperAndLower"
+let g:WhichKeyDesc_UpperAndLower_Upper = "<leader>U Upper"
+nmap <leader>U viwU
+let g:WhichKeyDesc_UpperAndLower_Lower = "<leader>u Lower"
+nmap <leader>u viwu
 
 " w: Window ⭐️
 let g:WhichKeyDesc_Windows = "<leader>w Windows"
@@ -205,9 +223,10 @@ nmap <leader>Y maggVG"by
 let g:WhichKeyDesc_Regions="<leader>z Regions"
 let g:WhichKeyDesc_ExpandAllRegions= "<leader> zo ExpandAllRegions"
 nmap <leader>zo <action>(ExpandAllRegions)
-let g:WhichKeyDesc_CollapseAllRegions= "<leader> zo CollapseAllRegions"
+let g:WhichKeyDesc_CollapseAllRegions= "<leader> zc CollapseAllRegions"
 nmap <leader>zc <action>(CollapseAllRegions)
 
+nmap <silent> <Space><Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 "===================================================================================
 "========= Insert map =========
 "===================================================================================
@@ -222,7 +241,7 @@ imap <buffer> ,s ~~~~ <++><Esc>F~hi
 imap <buffer> ,i ** <++><Esc>F*i
 imap <buffer> ,d `` <++><Esc>F`i
 imap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-imap <buffer> ,m - [ ] 
+imap <buffer> ,m - [ ]
 imap <buffer> ,p ![](<++>) <++><Esc>F[a
 imap <buffer> ,a [](<++>) <++><Esc>F[a
 imap <buffer> ,1 #<Space><Enter><++><Esc>kA
@@ -230,3 +249,49 @@ imap <buffer> ,2 ##<Space><Enter><++><Esc>kA
 imap <buffer> ,3 ###<Space><Enter><++><Esc>kA
 imap <buffer> ,4 ####<Space><Enter><++><Esc>kA
 imap <buffer> ,l --------<Enter>
+"===================================================================================
+"========= 插件使用介绍 =========
+"===================================================================================
+"========= NERTTree =========
+" NERDTree提供了丰富的键盘操作方式来浏览和打开文件，介绍一些常用的快捷键：
+"   和编辑文件一样，通过h j k l移动光标定位
+"   打开关闭文件或者目录，如果是文件的话，光标出现在打开的文件中
+"   go 效果同上，不过光标保持在文件目录里，类似预览文件内容的功能
+"   i和s可以水平分割或纵向分割窗口打开文件，前面加g类似go的功能
+"   t 在标签页中打开
+"   T 在后台标签页中打开
+"   p 到上层目录
+"   P 到根目录
+"   K 到同目录第一个节点
+"   J 到同目录最后一个节点
+"   m 显示文件系统菜单（添加、删除、移动操作）
+"   ? 帮助
+"   q 关闭
+"========= vim.surround =========
+"   It's easiest to explain with examples. Press cs"' inside
+"   "Hello world!"
+"   to change it to
+"   'Hello world!'
+
+"   Now press cs'<q> to change it to
+"   <q>Hello world!</q>
+"   To go full circle, press cst" to get
+"   "Hello world!"
+
+"   To remove the delimiters entirely, press ds".
+"   Hello world!
+
+"   Now with the cursor on "Hello", press ysiw] (iw is a text object).
+"   [Hello] world!
+
+"   Let's make that braces and add some space (use } instead of { for no space): cs]{
+"   { Hello } world!
+
+"   Now wrap the entire line in parentheses with yssb or yss).
+"   ({ Hello } world!)
+
+"   Revert to the original text: ds{ds)
+"   Hello world!
+
+"   Emphasize hello: ysiw<em>
+"   <em>Hello</em> world!
