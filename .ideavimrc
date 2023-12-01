@@ -7,9 +7,10 @@ Plug 'easymotion/vim-easymotion'
 Plug 'machakann/vim-highlightedyank'
 set quickscope
 set multicursor
-nmap ss <Plug>(easymotion-s)
 let g:highlightedyank_highlight_duration = "1000"
-let g:highlightedyank_highlight_color = "rgba(101, 76, 79, 150)"
+let g:highlightedyank_highlight_color = "rgba(227, 175, 188,  150)"
+let g:qs_primary_color = '#AA4C8F'
+let g:qs_secondary_color = '#AA4C8F'
 nmap <C-A-n> <Plug>(multicursor-ms/)
 
 " ================================================================================================
@@ -44,6 +45,7 @@ set keep-english-in-normal-and-restore-in-insert
 "置空s键
 nmap s <nop>
 nmap S <nop>
+nmap <leader>s <Plug>(easymotion-s)
 
 """ Idea specific settings ------------------
 set ideajoin
@@ -95,19 +97,13 @@ nmap sj :set splitbelow<CR>:split<CR>
 nmap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
 nmap sh :set splitright<CR>:vsplit<CR>
 nmap sl :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-" window options
-nmap wj <C-W>j
-nmap wk <C-W>k
-nmap wh <C-W>h
-nmap wl <C-W>l
 
 " ================================================================================================
 " 👻👻👻 Which-Key 👻👻👻
 " ================================================================================================
 set which-key
 set notimeout
-let g:WhichKeyDesc_NoHighlight = "<leader><CR> NoHighlight"
-nmap <leader><CR> :nohlsearch<CR>
+nmap <ESC> :nohl<CR>
 
 let g:WhichKeyDesc_CommentByLineComment = "<leader>;; CommentByLineComment"
 nmap <leader>;; :action CommentByLineComment<CR>
@@ -116,40 +112,31 @@ nmap <leader>;; :action CommentByLineComment<CR>
 let g:WhichKeyDesc_Select = "<leader>A SelectAll"
 nmap <leader>A maggVG
 
-" d: diff
-"nmap <leader>dd <action>(Vcs.ShowTabbedFileHistory)
-
 " e: Toggle Explorer ⭐️
-let g:WhichKeyDesc_ToggleExplorerOrExtract = "<leader>e ToggleExplorer"
-nmap <leader>e :NERDTreeToggle<CR>
-" e: Extract
-" extract method/function
-vmap <leader>em <action>(ExtractMethod)
-" extract constant
-vmap <leader>ec <action>(IntroduceConstant)
-" extract field
-vmap <leader>ef <action>(IntroduceField)
-" extract variable
-vmap <leader>ev <action>(IntroduceVariable)
+let g:WhichKeyDesc_ToggleExplorerOrExtract = "<leader>e 展示文件菜单"
+nmap <leader>e :NERDTreeFocus<CR>
+
 
 " f: Find/Format ⭐️;
-let g:WhichKeyDesc_FindOrFormat = "<leader>f FindOrFormat"
-let g:WhichKeyDesc_FindOrFormat_FindFile = "<leader>ff FindFile"
+let g:WhichKeyDesc_FindOrFormat = "<leader>f FindOrFormatOrFile"
+let g:WhichKeyDesc_FindOrFormat_FindFile = "<leader>ff 打开文件搜索框"
 nmap <leader>ff <action>(GotoFile)
 
-let g:WhichKeyDesc_FindOrFormat_FindFileLocation = "<leader>fl FindFileLocation"
+let g:WhichKeyDesc_FindOrFormat_FileStructure = "<leader>fs 文件结构"
+nmap <leader>fs <action>(FileStructurePopup)
+let g:WhichKeyDesc_FindOrFormat_FindFileLocation = "<leader>fl 跳转到文件所在位菜单的位置"
 nmap <leader>fl <action>(SelectInProjectView)
 
-let g:WhichKeyDesc_FindOrFormat_FindText = "<leader>ft FindText"
-nmap <leader>ft <action>(FindInPath)
+let g:WhichKeyDesc_FindOrFormat_FindText = "<leader>fw 在项目中查找文本"
+nmap <leader>fw <action>(FindInPath)
 
-let g:WhichKeyDesc_FindOrFormat_Commands = "<leader>fc Commands"
-nmap <leader>fc <action>(GotoAction)
+let g:WhichKeyDesc_FindOrFormat_Commands = "<leader>fc 打开操作查找框"
+nmap <leader>fa <action>(GotoAction)
 
-let g:WhichKeyDesc_FindOrFormat_OpenedProject = "<leader>fp OpenedProject"
+let g:WhichKeyDesc_FindOrFormat_OpenedProject = "<leader>fp 打开项目窗口"
 nmap <leader>fp <action>(OpenProjectWindows)
 
-let g:WhichKeyDesc_FindOrFormat_Format = "<leader>fm Format"
+let g:WhichKeyDesc_FindOrFormat_Format = "<leader>fm 格式化代码"
 nmap <leader>fm <action>(ReformatCode) \| <action>(OptimizeImports)
 
 " g: Git ⭐️
@@ -160,14 +147,6 @@ nmap <leader>gr :action Vcs.RollbackChangedLines<CR>
 " i: Insert ⭐️
 let g:WhichKeyDesc_InsertAfterBrackets = "<leader>i InsertAfterBrackets"
 nmap <leader>i f(
-
-" j: page down
-let g:WhichKeyDesc_pageDown ="<leader>j pageDown"
-nmap <leader>j  <C-d>
-
-" k: page up
-let g:WhichKeyDesc_pageUp ="<leader>k pageUp"
-nmap <leader>k  <C-u>
 
 "n: new Class with ncNewClass
 let g:WhichKeyDesc_NewClass ="<leader>nc NewClass"
@@ -191,13 +170,8 @@ nmap <leader>re <action>(RenameElement)
 let g:WhichKeyDesc_RecentFiles= "<leader>rf RecentFiles"
 nmap <leader>rf <action>(RecentFiles)
 
-let g:WhichKeyDesc_Show = "<leader>s Show"
-let g:WhichKeyDesc_Show_FileStructure = "<leader>ss ShowFileStructurePopup"
-nmap <leader>ss <action>(FileStructurePopup)
-let g:WhichKeyDesc_Show_Bookmarks = "<leader>sb ShowBookmarks"
-nmap <leader>sb <action>(ShowBookmarks)
-let g:WhichKeyDesc_Show_ParameterInfo = "<leader>sp ShowParameterInfo"
-nmap <leader>sp <action>(ParameterInfo)
+let g:WhichKeyDesc_Show_ParameterInfo = "<leader>pi ShowParameterInfo"
+nmap <leader>pi <action>(ParameterInfo)
 
 " u: upper lower ⭐️
 let g:WhichKeyDesc_UpperAndLower = "<leader>u UpperAndLower"
@@ -207,9 +181,12 @@ let g:WhichKeyDesc_UpperAndLower_Lower = "<leader>u Lower"
 nmap <leader>u viwu
 
 " w: Window ⭐️
+" window options
+nmap <leader>wj <C-W>j
+nmap <leader>wk <C-W>k
+nmap <leader>wh <C-W>h
+nmap <leader>wl <C-W>l
 let g:WhichKeyDesc_Windows = "<leader>w Windows"
-let g:WhichKeyDesc_Windows_splitWindowVertically = "<leader>wl splitWindowVertically"
-nmap <leader>wl <action>(Macro.SplitVertically)
 let g:WhichKeyDesc_Windows_CloseAllWindow = "<leader>ww CloseWindow"
 nmap <leader>ww <c-w>c
 let g:WhichKeyDesc_CloseThisWindow = "<leader>c CloseThisWindow"
@@ -226,29 +203,7 @@ nmap <leader>zo <action>(ExpandAllRegions)
 let g:WhichKeyDesc_CollapseAllRegions= "<leader> zc CollapseAllRegions"
 nmap <leader>zc <action>(CollapseAllRegions)
 
-nmap <silent> <Space><Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
-"===================================================================================
-"========= Insert map =========
-"===================================================================================
 imap ,; <ESC>A;<ESC>
-"autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
-imap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
-imap <buffer> <c-e> <Esc>/<++><CR>:nohlsearch<CR>"_c4l
-imap <buffer> ,w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
-imap <buffer> ,n ---<Enter><Enter>
-imap <buffer> ,b **** <++><Esc>F*hi
-imap <buffer> ,s ~~~~ <++><Esc>F~hi
-imap <buffer> ,i ** <++><Esc>F*i
-imap <buffer> ,d `` <++><Esc>F`i
-imap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-imap <buffer> ,m - [ ]
-imap <buffer> ,p ![](<++>) <++><Esc>F[a
-imap <buffer> ,a [](<++>) <++><Esc>F[a
-imap <buffer> ,1 #<Space><Enter><++><Esc>kA
-imap <buffer> ,2 ##<Space><Enter><++><Esc>kA
-imap <buffer> ,3 ###<Space><Enter><++><Esc>kA
-imap <buffer> ,4 ####<Space><Enter><++><Esc>kA
-imap <buffer> ,l --------<Enter>
 "===================================================================================
 "========= 插件使用介绍 =========
 "===================================================================================
@@ -267,6 +222,32 @@ imap <buffer> ,l --------<Enter>
 "   m 显示文件系统菜单（添加、删除、移动操作）
 "   ? 帮助
 "   q 关闭
+
+"| Key     |  Description                                            |  Map Setting                   |
+"|---------|---------------------------------------------------------|--------------------------------|
+"| `o`     |  Open files, directories and bookmarks                  | `g:NERDTreeMapActivateNode`    |
+"| `go`    |  Open selected file, but leave cursor in the NERDTree   | `g:NERDTreeMapPreview`         |
+"| `t`     |  Open selected node/bookmark in a new tab               | `g:NERDTreeMapOpenInTab`       |
+"| `T`     |  Same as 't' but keep the focus on the current tab      | `g:NERDTreeMapOpenInTabSilent` |
+"| `i`     |  Open selected file in a split window                   | `g:NERDTreeMapOpenSplit`       |
+"| `gi`    |  Same as i, but leave the cursor on the NERDTree        | `g:NERDTreeMapPreviewSplit`    |
+"| `s`     |  Open selected file in a new vsplit                     | `g:NERDTreeMapOpenVSplit`      |
+"| `gs`    |  Same as s, but leave the cursor on the NERDTree        | `g:NERDTreeMapPreviewVSplit`   |
+"| `O`     |  Recursively open the selected directory                | `g:NERDTreeMapOpenRecursively` |
+"| `x`     |  Close the current nodes parent                         | `g:NERDTreeMapCloseDir`        |
+"| `X`     |  Recursively close all children of the current node     | `g:NERDTreeMapCloseChildren`   |
+"| `P`     |  Jump to the root node                                  | `g:NERDTreeMapJumpRoot`        |
+"| `p`     |  Jump to current nodes parent                           | `g:NERDTreeMapJumpParent`      |
+"| `K`     |  Jump up inside directories at the current tree depth   | `g:NERDTreeMapJumpFirstChild`  |
+"| `J`     |  Jump down inside directories at the current tree depth | `g:NERDTreeMapJumpLastChild`   |
+"| `<C-J>` |  Jump down to next sibling of the current directory     | `g:NERDTreeMapJumpNextSibling` |
+"| `<C-K>` |  Jump up to previous sibling of the current directory   | `g:NERDTreeMapJumpPrevSibling` |
+"| `r`     |  Recursively refresh the current directory              | `g:NERDTreeMapRefresh`         |
+"| `R`     |  Recursively refresh the current root                   | `g:NERDTreeMapRefreshRoot`     |
+"| `m`     |  Display the NERDTree menu                              | `g:NERDTreeMapMenu`            |
+"| `q`     |  Close the NERDTree window                              | `g:NERDTreeMapQuit`            |
+"| `A`     |  Zoom (maximize/minimize) the NERDTree window           | `g:NERDTreeMapToggleZoom`      |
+
 "========= vim.surround =========
 "   It's easiest to explain with examples. Press cs"' inside
 "   "Hello world!"
